@@ -22,7 +22,7 @@ struct SimilarItemsView: View {
                 .listSectionSpacing(.medium)
             #endif
         }
-        .navigationTitle("Similaires")
+        .navigationTitle("Similar")
         .task {
             list.loadInitial { offset in
                 try await findSimilarItems(

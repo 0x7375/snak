@@ -15,7 +15,7 @@ struct PaginatedListView: View {
                     SearchResultRow(result: result)
                 }
             } header: {
-                Text("Résultats").font(.body)
+                Text("Results").font(.body)
             } footer: {
                 if model.hasMore {
                     LoadingView()
@@ -35,7 +35,7 @@ struct NoResultFoundLabel: View {
                 .font(.title)
                 .foregroundStyle(.secondary)
 
-            Text("Aucun résultat trouvé")
+            Text("No results found")
                 .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity)

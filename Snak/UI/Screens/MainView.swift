@@ -45,7 +45,7 @@ struct MainView: View {
             .environment(\.navigate, { navigation.append($0) })
 
             #if os(iOS)
-                .searchable(text: $query, placement: .navigationBarDrawer, prompt: "Rechercher...")
+                .searchable(text: $query, placement: .navigationBarDrawer, prompt: "Search...")
                 .onSubmit(of: .search, onSubmit)
                 .onChange(of: query) { _, newValue in
                     if newValue.isEmpty {
@@ -121,7 +121,7 @@ struct MainView: View {
 
     @ViewBuilder private var recentHistorySection: some View {
         VStack(alignment: .leading, spacing: .medium) {
-            Text("Consultés récemment")
+            Text("Recently visited")
                 .font(.headline)
                 .padding(.horizontal, .large)
 
@@ -139,7 +139,7 @@ struct MainView: View {
     @ViewBuilder private var discoverySection: some View {
         VStack(spacing: .medium) {
             HStack {
-                Text("Découvrir")
+                Text("Discover")
                     .font(.headline)
 
                 Spacer()

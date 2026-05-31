@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct LoadingView: View {
-    var text: String = "Cela peut prendre quelques secondes..."
+    var text: String = String(localized: "This might take a few seconds...")
 
     @State private var showMessage = false
 

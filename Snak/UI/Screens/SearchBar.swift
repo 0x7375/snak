@@ -8,7 +8,7 @@ struct SearchBar: View {
 
     var body: some View {
         HStack(spacing: .medium) {
-            TextField("Rechercher...", text: $query)
+            TextField("Search...", text: $query)
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled(true)
                 .onSubmit { onSubmit() }

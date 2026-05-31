@@ -24,12 +24,12 @@ struct FetchRandomItemButton: View {
             if isFetching {
                 LoadingView()
             } else if failed {
-                Label("Réessayer", systemImage: "arrow.counterclockwise")
+                Label("Retry", systemImage: "arrow.counterclockwise")
             } else {
                 VStack(spacing: .small) {
                     Image(systemName: "dice.fill")
                         .font(.title)
-                    Text("Entité au hasard")
+                    Text("Random entity")
                         .fontWeight(.semibold)
                 }
             }

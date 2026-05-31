@@ -25,7 +25,7 @@ struct DetailView: View {
             let safeLabel = entity?.label ?? initialData.label
             let canShowGeneral = safeLabel != nil || !isLoading
 
-            Section("Général") {
+            Section("General") {
                 if !canShowGeneral {
                     ProgressView()
                         .frame(maxWidth: .infinity)
@@ -37,7 +37,7 @@ struct DetailView: View {
 
                     let isItem = WikidataType(initialData.id) == .item
                     DetailRow(
-                        title: "Type", value: isItem ? "Item" : "Propriété", image: "cube.box")
+                        title: "Type", value: isItem ? "Item" : "Property", image: "cube.box")
 
                     DetailRow(title: "ID", value: initialData.id, image: "barcode")
 
@@ -52,14 +52,14 @@ struct DetailView: View {
                     .frame(maxWidth: .infinity)
                     .listRowBackground(Color.clear)
             } else if !filteredStatements.isEmpty {
-                Section("Déclarations") {
+                Section("Statements") {
                     ForEach(filteredStatements, id: \.property.id) { stmt in
                         statementRow(stmt)
                     }
                 }
             }
         }
-        .navigationTitle("Détails")
+        .navigationTitle("Details")
         .task {
             guard entity == nil else { return }
             isLoading = true
@@ -67,7 +67,7 @@ struct DetailView: View {
                 entityID: initialData.id, type: WikidataType(initialData.id))
             isLoading = false
         }
-        .searchable(text: $searchText, prompt: "Filter statements")
+        .searchable(text: $searchText, prompt: "Filter statements...")
     }
 
     @ViewBuilder private func statementRow(_ stmt: Entity.Statement) -> some View {
@@ -92,13 +92,13 @@ struct DetailView: View {
                 value: Entity.Context(
                     id: stmt.property.id, label: stmt.property.label, description: nil)
             ) {
-                Label("Propriété", systemImage: "text.book.closed")
+                Label("Property", systemImage: "text.book.closed")
                     .tint(Color.strongOrange)
             }
         }
         .swipeActions {
             NavigationLink(value: StatementQuery(property: stmt.property, value: stmt.value)) {
-                Label("Similaires", systemImage: "sparkle.magnifyingglass")
+                Label("Similar", systemImage: "sparkle.magnifyingglass")
                     .tint(stmt.value.isSearchable ? .accentColor : .gray.opacity(0.1))
             }
             .disabled(!stmt.value.isSearchable)

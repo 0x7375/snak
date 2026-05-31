@@ -76,12 +76,13 @@ extension WikidataValue where Ref == Entity.Statement.Reference {
                 displayFmt.setLocalizedDateFormatFromTemplate("yyyy")
             }
 
+            let beforeCommonArea = String(localized: "BCE")
             guard !isBCE, let parsedDate = ISO8601DateFormatter().date(from: cleanStr) else {
-                return isBCE ? "\(year) BCE" : cleanStr
+                return isBCE ? "\(year) \(beforeCommonArea)" : cleanStr
             }
 
             let result = displayFmt.string(from: parsedDate)
-            return isBCE ? "\(result) BCE" : result
+            return isBCE ? "\(result) \(beforeCommonArea)" : result
 
         case .coordinate(let lat, let lon):
             func dms(from val: Double, axis: Axis) -> String {
@@ -94,9 +95,15 @@ extension WikidataValue where Ref == Entity.Statement.Reference {
                 let direction: String
                 switch axis {
                 case .latitude:
-                    direction = val >= 0 ? "N" : "S"
+                    direction =
+                        val >= 0
+                        ? String(localized: "N", comment: "North abbreviated")
+                        : String(localized: "S", comment: "South abbreviated")
                 case .longitude:
-                    direction = val >= 0 ? "E" : "W"
+                    direction =
+                        val >= 0
+                        ? String(localized: "E", comment: "East abbreviated")
+                        : String(localized: "W", comment: "West abbreviated")
                 }
 
                 guard minutes > 0 || seconds > 0 else { return "\(degrees)°\(direction)" }

@@ -1,7 +1,6 @@
 import Foundation
 
-// let systemLang = Locale.current.language.languageCode?.identifier ?? "en"
-let systemLang = "fr"
+let systemLang = Locale.current.language.languageCode?.identifier ?? "en"
 
 extension Dictionary where Key == String {
     func preferredLanguage() -> Value? {
