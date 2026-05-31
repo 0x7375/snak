@@ -47,8 +47,11 @@
 				Localizable.xcstrings,
 				SnakApp.swift,
 				UI/Components/EntityTypeCapsule.swift,
+				UI/Components/FetchRandomItemButton.swift,
 				UI/Components/LoadingView.swift,
 				UI/Components/PaginatedListView.swift,
+				UI/Components/RecentlyVisitedCard.swift,
+				UI/Components/SearchBar.swift,
 				UI/Components/SearchResultRow.swift,
 				"UI/Extensions/CGFloat+Spacing.swift",
 				"UI/Extensions/EnvironmentValues+Navigate.swift",
@@ -56,10 +59,7 @@
 				"UI/Extensions/WikidataType+Color.swift",
 				"UI/Extensions/WikidataValue+UI.swift",
 				UI/Screens/DetailView.swift,
-				UI/Screens/FetchRandomItemButton.swift,
 				UI/Screens/MainView.swift,
-				UI/Screens/RecentlyVisitedCard.swift,
-				UI/Screens/SearchBar.swift,
 				UI/Screens/SimilarItemsView.swift,
 			);
 			target = 2CD019C92FC862F700E807FC /* SnakWatch */;
