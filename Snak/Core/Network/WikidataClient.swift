@@ -2,6 +2,9 @@ import Foundation
 
 let systemLang = Locale.current.language.languageCode?.identifier ?? "en"
 
+let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
+let userAgent = "Snak/\(appVersion) (https://github.com/0x7375/snak; ayko@0xaa.me)"
+
 extension Dictionary where Key == String {
     func preferredLanguage() -> Value? {
         return self[systemLang] ?? self["en"]
@@ -28,7 +31,10 @@ struct WikimediaEndpoint {
             throw URLError(.badURL)
         }
 
-        let (data, response) = try await URLSession.shared.data(from: url)
+        var request = URLRequest(url: url)
+        request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
+
+        let (data, response) = try await URLSession.shared.data(for: request)
 
         guard (response as? HTTPURLResponse)?.statusCode == 200 else {
             throw URLError(.badServerResponse)
