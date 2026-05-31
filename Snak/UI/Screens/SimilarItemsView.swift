@@ -13,7 +13,7 @@ struct SimilarItemsView: View {
                         .frame(maxWidth: .infinity, alignment: .center)
                         .listRowSeparator(.hidden)
                         .padding(.horizontal, .medium)
-                        .padding(.vertical, .medium)
+                        .padding(.vertical, .small)
                     #endif
 
                 PaginatedListView(model: list)

@@ -14,7 +14,7 @@ struct FetchRandomItemButton: View {
                 isFetching = true
                 defer { isFetching = false }
 
-                if let id = try? await fetchRandomItems().first {
+                if let id = try? await fetchRandomItems(amount: 1).first {
                     navigate(id)
                 } else {
                     failed = true

@@ -1,5 +1,7 @@
 import Foundation
 
+let historyMaxCount = 10
+
 @Observable
 @MainActor
 class HistoryManager {
@@ -14,7 +16,7 @@ class HistoryManager {
         visited.removeAll { $0.id == ctx.id }
         visited.insert(ctx, at: 0)
 
-        if visited.count > 10 {
+        if visited.count > historyMaxCount {
             visited.removeLast()
         }
 

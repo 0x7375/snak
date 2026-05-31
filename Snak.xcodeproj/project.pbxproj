@@ -41,7 +41,7 @@
 				Core/DiscoveryFeed.swift,
 				Core/Entity.swift,
 				Core/HistoryManager.swift,
-				Core/Network/SPARQLQuery.swift,
+				Core/Network/SimilarItems.swift,
 				Core/Network/WikidataClient.swift,
 				Core/Network/WikidataResponse.swift,
 				Core/Network/WikidataService.swift,

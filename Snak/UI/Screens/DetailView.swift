@@ -67,7 +67,9 @@ struct DetailView: View {
                 entityID: initialData.id, type: WikidataType(initialData.id))
             isLoading = false
         }
-        .searchable(text: $searchText, prompt: "Filter statements...")
+        #if os(iOS)
+            .searchable(text: $searchText, prompt: "Filter statements...")
+        #endif
     }
 
     @ViewBuilder private func statementRow(_ stmt: Entity.Statement) -> some View {
@@ -97,11 +99,12 @@ struct DetailView: View {
             }
         }
         .swipeActions {
-            NavigationLink(value: StatementQuery(property: stmt.property, value: stmt.value)) {
-                Label("Similar", systemImage: "sparkle.magnifyingglass")
-                    .tint(stmt.value.isSearchable ? .accentColor : .gray.opacity(0.1))
+            if stmt.value.isSearchable {
+                NavigationLink(value: StatementQuery(property: stmt.property, value: stmt.value)) {
+                    Label("Similar", systemImage: "sparkle.magnifyingglass")
+                        .tint(.accentColor)
+                }
             }
-            .disabled(!stmt.value.isSearchable)
         }
     }
 }
