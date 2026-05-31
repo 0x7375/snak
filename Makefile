@@ -53,7 +53,8 @@ release:
 	cp -R $(BUILD_DIR)/Build/Products/$(PRODUCTS_DIR)/$(APP_NAME) $(BUILD_DIR)/ipa/Payload/
 	cd $(BUILD_DIR)/ipa && zip -qr $(APP_NAME:.app=.ipa) Payload
 	rm -rf $(BUILD_DIR)/ipa/Payload
-	@echo "$(APP_NAME:.app=.ipa) created at $(BUILD_DIR)/ipa/$(APP_NAME:.app=.ipa)"
+	cp -f $(BUILD_DIR)/ipa/$(APP_NAME:.app=.ipa) .
+	@echo "$(APP_NAME:.app=.ipa) created at ./$(APP_NAME:.app=.ipa)"
 
 clean:
 	rm -rf ./.build ./buildServer.json

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2C0D2AF32FC8BBAC008ABD22 /* SnakWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 2CD019CA2FC862F800E807FC /* SnakWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		2CBD22A92FC8847B0051190D /* HotSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 2CBD22A82FC8847B0051190D /* HotSwiftUI */; };
 		2CBD22AB2FC8847B0051190D /* InjectionNext in Frameworks */ = {isa = PBXBuildFile; productRef = 2CBD22AA2FC8847B0051190D /* InjectionNext */; };
 		2CBD22AD2FC8973F0051190D /* HotSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 2CBD22AC2FC8973F0051190D /* HotSwiftUI */; };
@@ -21,7 +20,6 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
-				2C0D2AF32FC8BBAC008ABD22 /* SnakWatch.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
