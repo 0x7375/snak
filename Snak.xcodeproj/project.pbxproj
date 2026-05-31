@@ -11,6 +11,7 @@
 		2CBD22AB2FC8847B0051190D /* InjectionNext in Frameworks */ = {isa = PBXBuildFile; productRef = 2CBD22AA2FC8847B0051190D /* InjectionNext */; };
 		2CBD22AD2FC8973F0051190D /* HotSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 2CBD22AC2FC8973F0051190D /* HotSwiftUI */; };
 		2CBD22AF2FC8973F0051190D /* InjectionNext in Frameworks */ = {isa = PBXBuildFile; productRef = 2CBD22AE2FC8973F0051190D /* InjectionNext */; };
+		2CEE20152FCC7E09001A2671 /* EmbedScript.sh in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 2CEE20142FCC7E09001A2671 /* EmbedScript.sh */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -20,6 +21,7 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
+				2CEE20152FCC7E09001A2671 /* EmbedScript.sh in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -29,6 +31,7 @@
 /* Begin PBXFileReference section */
 		2CD019CA2FC862F800E807FC /* SnakWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SnakWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CD6AF0D2FC77A5500406EDF /* Snak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Snak.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2CEE20142FCC7E09001A2671 /* EmbedScript.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = EmbedScript.sh; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -109,6 +112,7 @@
 		2CD6AF042FC77A5500406EDF = {
 			isa = PBXGroup;
 			children = (
+				2CEE20142FCC7E09001A2671 /* EmbedScript.sh */,
 				2CD6AF0F2FC77A5500406EDF /* Snak */,
 				2CBD22A72FC8847B0051190D /* Frameworks */,
 				2CD6AF0E2FC77A5500406EDF /* Products */,
@@ -264,6 +268,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = SnakWatch;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = me.0xaa.Snak;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -301,6 +306,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = SnakWatch;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = me.0xaa.Snak;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
