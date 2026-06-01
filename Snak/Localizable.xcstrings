@@ -99,6 +99,16 @@
         }
       }
     },
+    "No description" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucune description"
+          }
+        }
+      }
+    },
     "No results found" : {
       "localizations" : {
         "fr" : {

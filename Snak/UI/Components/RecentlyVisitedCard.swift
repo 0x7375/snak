@@ -18,7 +18,7 @@ struct RecentlyVisitedCard: View {
                     EntityTypeCapsule(id: item.id, short: true)
                 }
 
-                Text(item.description ?? "No description")
+                Text(item.description ?? String(localized: "No description"))
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(3)
