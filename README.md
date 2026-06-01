@@ -2,7 +2,7 @@
 
 A native [Wikidata](https://www.wikidata.org/) browser for iOS and watchOS.
 
-**The project is its early stages**
+**The project is in its early stages**
 
 # Features
 
