@@ -59,6 +59,7 @@
 				"UI/Extensions/CGFloat+Spacing.swift",
 				"UI/Extensions/EnvironmentValues+Navigate.swift",
 				"UI/Extensions/NavigationPath+Persistence.swift",
+				"UI/Extensions/StringProtocol+FirstUppercase.swift",
 				"UI/Extensions/WikidataType+Color.swift",
 				"UI/Extensions/WikidataValue+UI.swift",
 				UI/Screens/DetailView.swift,

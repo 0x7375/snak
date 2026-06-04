@@ -137,7 +137,7 @@ struct DetailRow: View {
         VStack(alignment: .leading, spacing: .small) {
             HStack(spacing: .small) {
                 Image(systemName: image)
-                Text(title)
+                Text(title.firstUppercased)
             }
             .font(.callout)
             .foregroundStyle(.secondary)

@@ -18,7 +18,7 @@ struct SimilarItemsView: View {
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     VStack {
-                        Text(query.property.label?.capitalized ?? query.property.id)
+                        Text(query.property.label?.firstUppercased ?? query.property.id)
                         .font(.caption)
                         .foregroundStyle(.secondary)
 
