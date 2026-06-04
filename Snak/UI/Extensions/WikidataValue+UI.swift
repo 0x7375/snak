@@ -59,7 +59,7 @@ extension WikidataValue where Ref == Entity.Statement.Reference {
             let dateStr = String(trimmedStr.split(separator: "T").first ?? trimmedStr[...])
             let parts = dateStr.split(separator: "-").map(String.init)
             let yearInt = Int(parts[0]) ?? 0
-            let bce = isBCE ? String(localized: " BCE") : ""
+            let bce = isBCE ? " " + String(localized: "BCE") : ""
 
             let fmt = NumberFormatter()
             fmt.numberStyle = .ordinal
@@ -69,7 +69,7 @@ extension WikidataValue where Ref == Entity.Statement.Reference {
                 let result = String(localized: "\(ordinal) millennium")
                 return "\(result)\(bce)"
             case .century:
-                let ordinal = fmt.string(from: NSNumber(value: (yearInt / 100) + 1)) ?? ""
+                let ordinal = fmt.string(from: NSNumber(value: ((yearInt - 1) / 100) + 1)) ?? ""
                 let result = String(localized: "\(ordinal) century")
                 return "\(result)\(bce)"
             case .decade:
