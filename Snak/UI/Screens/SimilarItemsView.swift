@@ -7,22 +7,29 @@ struct SimilarItemsView: View {
     var body: some View {
         Group {
             List {
-                headerView
-                    #if os(iOS)
-                        .font(.title2)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .listRowSeparator(.hidden)
-                        .padding(.horizontal, .medium)
-                        .padding(.vertical, .small)
-                    #endif
-
                 PaginatedListView(model: list)
             }
             #if os(watchOS)
                 .listSectionSpacing(.medium)
             #endif
         }
-        .navigationTitle("Similar")
+        #if os(iOS)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    VStack {
+                        Text(query.property.label?.capitalized ?? query.property.id)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+
+                        Text(query.value.displayString)
+                        .font(.headline)
+                    }
+                }
+            }
+        #elseif os(watchOS)
+            .navigationTitle(query.value.displayString)
+        #endif
         .task {
             list.loadInitial { offset in
                 try await findSimilarItems(
@@ -32,22 +39,6 @@ struct SimilarItemsView: View {
                 )
             }
         }
-    }
-
-    private var headerView: some View {
-        let propertyText = Text(query.property.label ?? query.property.id).bold()
-        let valueText = Text(query.value.displayString).foregroundStyle(.secondary)
-
-        let type = WikidataType(query.value.id ?? "Q")
-
-        return HStack(alignment: .firstTextBaseline) {
-            Image(systemName: query.value.systemImage)
-                .foregroundStyle(type.displayColor)
-
-            Text("\(propertyText): \(valueText)")
-                .lineLimit(3)
-        }
-        .listRowBackground(Color.clear)
     }
 }
 
@@ -77,6 +68,5 @@ struct SimilarItemsView: View {
             .navigationDestination(for: StatementQuery.self) { query in
                 SimilarItemsView(query: query)
             }
-
     }
 }

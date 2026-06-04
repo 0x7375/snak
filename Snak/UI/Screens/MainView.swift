@@ -30,7 +30,7 @@ struct MainView: View {
                     watchLayout
                 #endif
             }
-            .navigationTitle("Snak")
+            .navigationTitle("Home")
             .navigationDestination(for: Entity.Context.self) { ctx in
                 DetailView(initialData: ctx)
                     .task {

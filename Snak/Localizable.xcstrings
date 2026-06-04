@@ -1,22 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "%@: %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@: %2$@"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$@: %2$@"
-          }
-        }
-      }
-    },
     "BCE" : {
       "localizations" : {
         "fr" : {
@@ -84,6 +68,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Général"
+          }
+        }
+      }
+    },
+    "Home" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accueil"
           }
         }
       }
@@ -196,16 +190,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Similaires"
-          }
-        }
-      }
-    },
-    "Snak" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Snak"
           }
         }
       }

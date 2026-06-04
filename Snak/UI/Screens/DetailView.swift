@@ -21,18 +21,18 @@ struct DetailView: View {
     }
 
     var body: some View {
-        List {
-            let safeLabel = entity?.label ?? initialData.label
-            let canShowGeneral = safeLabel != nil || !isLoading
+        let fallbackLabel = entity?.label ?? initialData.label
+        let canShowGeneral = fallbackLabel != nil || !isLoading
 
+        List {
             Section("General") {
                 if !canShowGeneral {
                     ProgressView()
                         .frame(maxWidth: .infinity)
                         .listRowBackground(Color.clear)
                 } else {
-                    if let safeLabel = entity?.label ?? initialData.label {
-                        DetailRow(title: "Label", value: safeLabel, image: "tag")
+                    if let fallbackLabel {
+                        DetailRow(title: "Label", value: fallbackLabel, image: "tag")
                     }
 
                     let isItem = WikidataType(initialData.id) == .item
@@ -59,7 +59,7 @@ struct DetailView: View {
                 }
             }
         }
-        .navigationTitle("Details")
+        .navigationTitle(fallbackLabel ?? String(localized: "Details"))
         .task {
             guard entity == nil else { return }
             isLoading = true
