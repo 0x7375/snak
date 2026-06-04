@@ -32,15 +32,18 @@ struct Entity {
 struct StatementQuery: Codable, Hashable {
     let property: Entity.Property
     let value: WikidataValue<Entity.Statement.Reference>
+    let entityID: String
 
     static func == (lhs: StatementQuery, rhs: StatementQuery) -> Bool {
         return lhs.property.id == rhs.property.id
             && lhs.value.sparqlFormat == rhs.value.sparqlFormat
+            && lhs.entityID == rhs.entityID
     }
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(property.id)
         hasher.combine(value.sparqlFormat)
+        hasher.combine(entityID)
     }
 }
 

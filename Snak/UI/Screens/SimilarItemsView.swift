@@ -34,39 +34,11 @@ struct SimilarItemsView: View {
             list.loadInitial { offset in
                 try await findSimilarItems(
                     propertyID: query.property.id,
+                    entityID: query.entityID,
                     value: query.value,
                     offset: offset
                 )
             }
         }
-    }
-}
-
-#Preview {
-    @Previewable @State var path = NavigationPath()
-
-    let mockProperty = Entity.Property(
-        id: "P106",
-        label: "occupation"
-    )
-
-    let mockReference = Entity.Statement.Reference(
-        id: "Q82594",
-        label: "computer scientist"
-    )
-
-    let mockQuery = StatementQuery(
-        property: mockProperty,
-        value: .entity(mockReference)
-    )
-
-    NavigationStack(path: $path) {
-        SimilarItemsView(query: mockQuery)
-            .navigationDestination(for: Entity.Context.self) { result in
-                DetailView(initialData: result)
-            }
-            .navigationDestination(for: StatementQuery.self) { query in
-                SimilarItemsView(query: query)
-            }
     }
 }

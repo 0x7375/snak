@@ -100,7 +100,10 @@ struct DetailView: View {
         }
         .swipeActions {
             if stmt.value.isSearchable {
-                NavigationLink(value: StatementQuery(property: stmt.property, value: stmt.value)) {
+                NavigationLink(
+                    value: StatementQuery(
+                        property: stmt.property, value: stmt.value, entityID: initialData.id)
+                ) {
                     Label("Similar", systemImage: "sparkle.magnifyingglass")
                         .tint(.accentColor)
                 }
@@ -154,24 +157,5 @@ struct DetailRow: View {
                 }
             }
         #endif
-    }
-}
-
-#Preview {
-    @Previewable @State var path = NavigationPath()
-
-    let mockContext = Entity.Context(
-        id: "Q279446",
-        label: nil,
-        description: nil
-    )
-    NavigationStack(path: $path) {
-        DetailView(initialData: mockContext)
-            .navigationDestination(for: Entity.Context.self) { result in
-                DetailView(initialData: result)
-            }
-            .navigationDestination(for: StatementQuery.self) { query in
-                SimilarItemsView(query: query)
-            }
     }
 }
