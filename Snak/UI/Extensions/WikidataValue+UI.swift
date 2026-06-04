@@ -55,34 +55,50 @@ extension WikidataValue where Ref == Entity.Statement.Reference {
 
         case .time(let date, let precision):
             let isBCE = date.hasPrefix("-")
-            let cleanStr = date.trimmingCharacters(in: CharacterSet(charactersIn: "-"))
-            let year = Int(cleanStr.prefix(4)) ?? 0
+            let trimmedStr = date.trimmingCharacters(in: CharacterSet(charactersIn: "-"))
+            let dateStr = String(trimmedStr.split(separator: "T").first ?? trimmedStr[...])
+            let parts = dateStr.split(separator: "-").map(String.init)
+            let yearInt = Int(parts[0]) ?? 0
+            let bce = isBCE ? String(localized: " BCE") : ""
 
-            // century
-            if precision == 7 {
-                let fmt = NumberFormatter()
-                fmt.numberStyle = .ordinal
-                let ordinal = fmt.string(from: NSNumber(value: (year / 100) + 1)) ?? ""
-                return "\(ordinal) century"
+            let fmt = NumberFormatter()
+            fmt.numberStyle = .ordinal
+            switch precision {
+            case .millennium:
+                let ordinal = fmt.string(from: NSNumber(value: yearInt / 1000)) ?? ""
+                let result = String(localized: "\(ordinal) millennium")
+                return "\(result)\(bce)"
+            case .century:
+                let ordinal = fmt.string(from: NSNumber(value: (yearInt / 100) + 1)) ?? ""
+                let result = String(localized: "\(ordinal) century")
+                return "\(result)\(bce)"
+            case .decade:
+                let result = String(localized: "\(yearInt)s")
+                return "\(result)\(bce)"
+            default:
+                break
+            }
+
+            let month = parts.count > 1 ? (parts[1] == "00" ? "01" : parts[1]) : "01"
+            let day = parts.count > 2 ? (parts[2] == "00" ? "01" : parts[2]) : "01"
+            let normalizedDate = "\(parts[0])-\(month)-\(day)"
+
+            let isoFormatter = ISO8601DateFormatter()
+            isoFormatter.formatOptions = [.withFullDate, .withDashSeparatorInDate]
+
+            guard !isBCE, let parsedDate = isoFormatter.date(from: normalizedDate) else {
+                return "\(yearInt)\(bce)"
             }
 
             let displayFmt = DateFormatter()
-
-            if precision == 11 {
-                displayFmt.setLocalizedDateFormatFromTemplate("d MMMM yyyy")
-            } else if precision == 10 {
-                displayFmt.setLocalizedDateFormatFromTemplate("MMMM yyyy")
-            } else {
-                displayFmt.setLocalizedDateFormatFromTemplate("yyyy")
-            }
-
-            let beforeCommonArea = String(localized: "BCE")
-            guard !isBCE, let parsedDate = ISO8601DateFormatter().date(from: cleanStr) else {
-                return isBCE ? "\(year) \(beforeCommonArea)" : cleanStr
+            switch precision {
+            case .day: displayFmt.setLocalizedDateFormatFromTemplate("d MMMM y")
+            case .month: displayFmt.setLocalizedDateFormatFromTemplate("MMMM y")
+            default: displayFmt.setLocalizedDateFormatFromTemplate("y")
             }
 
             let result = displayFmt.string(from: parsedDate)
-            return isBCE ? "\(result) \(beforeCommonArea)" : result
+            return "\(result)\(bce)"
 
         case .coordinate(let lat, let lon):
             func dms(from val: Double, axis: Axis) -> String {

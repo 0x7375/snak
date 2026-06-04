@@ -1,12 +1,42 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "BCE" : {
+    " BCE" : {
       "localizations" : {
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "av. J.-C."
+          }
+        }
+      }
+    },
+    "%@ century" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ siècle"
+          }
+        }
+      }
+    },
+    "%@ millennium" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ millénaire"
+          }
+        }
+      }
+    },
+    "%llds" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "années %lld"
           }
         }
       }

@@ -65,7 +65,7 @@ struct EntityResponse: Decodable {
 
         struct Time: Decodable {
             let time: String
-            let precision: Int
+            let precision: WikidataPrecision
         }
 
         struct Coord: Decodable {

@@ -53,12 +53,23 @@ enum WikidataType: String {
     }
 }
 
+enum WikidataPrecision: Int, Codable {
+    /// Wikidata time precision values
+    /// https://www.wikidata.org/wiki/Help:Dates#Precision
+    case millennium = 6
+    case century = 7
+    case decade = 8
+    case year = 9
+    case month = 10
+    case day = 11
+}
+
 enum WikidataValue<Ref> {
     case string(String)
     case math(String)
     case entity(Ref)
     case quantity(amount: Double, unit: Ref?)
-    case time(time: String, precision: Int)
+    case time(time: String, precision: WikidataPrecision)
     case coordinate(lat: Double, lon: Double)
     case url(String)
     case externalID(String)
