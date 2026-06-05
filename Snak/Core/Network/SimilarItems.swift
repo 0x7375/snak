@@ -22,8 +22,8 @@ func findSimilarItems(
                     bd:serviceParam wikibase:center \(value.sparqlFormat) .
                     bd:serviceParam wikibase:radius "\(geoRadius)" .
                     bd:serviceParam wikibase:distance ?distance .
-                    \(filterString)
                   }
+                  \(filterString)
                 }
                 ORDER BY ?distance
                 LIMIT \(limit)
