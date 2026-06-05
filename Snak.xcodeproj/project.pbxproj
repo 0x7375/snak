@@ -47,6 +47,7 @@
 				Core/Network/WikidataResponse.swift,
 				Core/Network/WikidataService.swift,
 				Core/PaginatedList.swift,
+				Core/POIMatcher.swift,
 				Localizable.xcstrings,
 				SnakApp.swift,
 				UI/Components/EntityTypeCapsule.swift,

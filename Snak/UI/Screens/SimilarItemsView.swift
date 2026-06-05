@@ -33,11 +33,12 @@ struct SimilarItemsView: View {
         .task {
             list.loadInitial { offset in
                 try await findSimilarItems(
-                    propertyID: query.property.id,
-                    entityID: query.entityID,
-                    value: query.value,
-                    offset: offset
-                )
+                    SimilarItemsQuery(
+                        propertyID: query.property.id,
+                        value: query.value,
+                        excludingEntityID: query.entityID,
+                        offset: offset
+                    ))
             }
         }
     }

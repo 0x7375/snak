@@ -46,7 +46,6 @@ struct MainView: View {
             .navigationDestination(for: MapDestination.self) { dest in
                 MapView(dest: dest)
             }
-            .environment(\.navigate, { navigation.append($0) })
 
             #if os(iOS)
                 .searchable(text: $query, placement: .navigationBarDrawer, prompt: "Search...")
@@ -66,6 +65,7 @@ struct MainView: View {
             #endif
 
         }
+        .environment(\.navigate, { navigation.append($0) })
     }
 
     private func onClear() {
