@@ -221,8 +221,8 @@ private func resolve(_ value: WikidataValue<String>) async -> WikidataValue<
     case .time(let t, let p):
         return .time(time: t, precision: p)
 
-    case .coordinate(let lat, let lon):
-        return .coordinate(lat: lat, lon: lon)
+    case .coordinate(let lat, let lon, let p):
+        return .coordinate(lat: lat, lon: lon, precision: p)
 
     case .math(let f):
         return .math(f)

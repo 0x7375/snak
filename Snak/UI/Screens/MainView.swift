@@ -1,3 +1,4 @@
+import CoreLocation
 import SwiftUI
 
 #if DEBUG
@@ -41,6 +42,9 @@ struct MainView: View {
             }
             .navigationDestination(for: StatementQuery.self) { query in
                 SimilarItemsView(query: query)
+            }
+            .navigationDestination(for: MapDestination.self) { dest in
+                MapView(dest: dest)
             }
             .environment(\.navigate, { navigation.append($0) })
 

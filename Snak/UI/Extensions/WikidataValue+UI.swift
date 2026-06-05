@@ -100,7 +100,7 @@ extension WikidataValue where Ref == Entity.Statement.Reference {
             let result = displayFmt.string(from: parsedDate)
             return "\(result)\(bce)"
 
-        case .coordinate(let lat, let lon):
+        case .coordinate(let lat, let lon, _):
             func dms(from val: Double, axis: Axis) -> String {
                 let absVal = abs(val)
                 let degrees = Int(absVal)

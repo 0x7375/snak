@@ -1,3 +1,4 @@
+import MapKit
 import SwiftUI
 
 extension Entity.Statement {
@@ -20,8 +21,11 @@ struct DetailView: View {
         return stmts.filter { $0.matches(searchText) }
     }
 
+    var fallbackLabel: String? {
+        return entity?.label ?? initialData.label
+    }
+
     var body: some View {
-        let fallbackLabel = entity?.label ?? initialData.label
         let canShowGeneral = fallbackLabel != nil || !isLoading
 
         List {
@@ -81,7 +85,17 @@ struct DetailView: View {
                 ) {
                     DetailRow(
                         title: safeLabel, value: stmt.value.displayString,
-                        image: stmt.value.systemImage, id: ref.id)
+                        image: stmt.value.systemImage, style: .entity(id: ref.id))
+                }
+            } else if case .coordinate(let lat, let lon, let p) = stmt.value {
+                NavigationLink(
+                    value: MapDestination(
+                        title: fallbackLabel ?? initialData.id, latitude: lat, longitude: lon,
+                        precision: p)
+                ) {
+                    DetailRow(
+                        title: safeLabel, value: stmt.value.displayString,
+                        image: stmt.value.systemImage, style: .fixed)
                 }
             } else {
                 DetailRow(
@@ -113,14 +127,21 @@ struct DetailView: View {
 }
 
 struct DetailRow: View {
+    enum Style {
+        case expandable
+        case fixed
+        case entity(id: String)
+    }
+
     let title: String
     let value: String
     let image: String
-    var id: String? = nil
+    var style: Style = .expandable
     @State private var expand = false
 
     var body: some View {
-        if let id = id {
+        switch style {
+        case .entity(let id):
             HStack {
                 stack
                     #if os(iOS)
@@ -129,10 +150,12 @@ struct DetailRow: View {
                 Spacer()
                 EntityTypeCapsule(id: id)
             }
-        } else {
+        case .expandable:
             stack.onTapGesture {
                 expand.toggle()
             }
+        case .fixed:
+            stack
         }
     }
 

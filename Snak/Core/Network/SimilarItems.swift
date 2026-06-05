@@ -127,7 +127,7 @@ extension WikidataValue where Ref == Entity.Statement.Reference {
             return "wd:\(reference.id)"
         case .string(let text), .externalID(let text):
             return "\"\(text)\""
-        case .coordinate(let lat, let lon):
+        case .coordinate(let lat, let lon, _):
             return "\"Point(\(lon) \(lat))\"^^geo:wktLiteral"
         case .url(let url):
             return "<\(url)>"

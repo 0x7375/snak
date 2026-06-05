@@ -52,6 +52,7 @@
 				UI/Components/EntityTypeCapsule.swift,
 				UI/Components/FetchRandomItemButton.swift,
 				UI/Components/LoadingView.swift,
+				UI/Components/MapView.swift,
 				UI/Components/PaginatedListView.swift,
 				UI/Components/RecentlyVisitedCard.swift,
 				UI/Components/SearchBar.swift,

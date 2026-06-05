@@ -71,6 +71,7 @@ struct EntityResponse: Decodable {
         struct Coord: Decodable {
             let latitude: Double
             let longitude: Double
+            let precision: Double
         }
 
         struct Quantity: Decodable {
@@ -114,7 +115,8 @@ struct EntityResponse: Decodable {
 
             case .coordinate:
                 guard let coord = try? vc?.decode(Coord.self, forKey: .value) else { return nil }
-                return .coordinate(lat: coord.latitude, lon: coord.longitude)
+                return .coordinate(
+                    lat: coord.latitude, lon: coord.longitude, precision: coord.precision)
 
             case .quantity:
                 guard let q = try? vc?.decode(Quantity.self, forKey: .value) else { return nil }

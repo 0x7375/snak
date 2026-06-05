@@ -73,7 +73,7 @@ enum WikidataValue<Ref> {
     case entity(Ref)
     case quantity(amount: Double, unit: Ref?)
     case time(time: String, precision: WikidataPrecision)
-    case coordinate(lat: Double, lon: Double)
+    case coordinate(lat: Double, lon: Double, precision: Double)
     case url(String)
     case externalID(String)
 }
