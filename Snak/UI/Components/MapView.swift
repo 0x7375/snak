@@ -78,10 +78,10 @@ struct MapView: View {
             if let bestMatch = POIMatcher.findBestMatch(applePOI: name, wikidataResults: results) {
                 navigate(bestMatch)
             } else {
-                showToast("No match found for '\(name)'")
+                showToast(String(localized: "No match found for '\(name)'"))
             }
         } catch {
-            showToast("Network error")
+            showToast(String(localized: "Network error"))
         }
 
         selectedFeature = nil
