@@ -128,6 +128,28 @@ func fetchRandomItems(amount: Int = 4) async throws -> [Entity.Context] {
     }
 }
 
+func fetchFormatterURL(propertyID: String) async -> String? {
+    let formatterPropertyID = "P1630"
+
+    let response: FormatterResponse? = try? await WikimediaEndpoint(
+        queryItems: [
+            URLQueryItem(name: "action", value: "wbgetclaims"),
+            URLQueryItem(name: "entity", value: propertyID),
+            URLQueryItem(name: "property", value: formatterPropertyID),
+            URLQueryItem(name: "format", value: "json"),
+        ]
+    ).fetch()
+
+    guard let resultStatements = response?.claims[formatterPropertyID],
+        let best = resultStatements.max(by: { $0.rank.priority < $1.rank.priority }),
+        case .string(let formatter) = best.value
+    else {
+        return nil
+    }
+
+    return formatter
+}
+
 private func fetchStatements(_ claims: [String: [EntityResponse.Statement]], _ type: WikidataType)
     async throws
     -> [Entity
@@ -232,5 +254,8 @@ private func resolve(_ value: WikidataValue<String>) async -> WikidataValue<
 
     case .externalID(let id):
         return .externalID(id)
+
+    case .media(let file):
+        return .media(file)
     }
 }

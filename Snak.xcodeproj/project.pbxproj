@@ -11,6 +11,7 @@
 		2CBD22AB2FC8847B0051190D /* InjectionNext in Frameworks */ = {isa = PBXBuildFile; productRef = 2CBD22AA2FC8847B0051190D /* InjectionNext */; };
 		2CBD22AD2FC8973F0051190D /* HotSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 2CBD22AC2FC8973F0051190D /* HotSwiftUI */; };
 		2CBD22AF2FC8973F0051190D /* InjectionNext in Frameworks */ = {isa = PBXBuildFile; productRef = 2CBD22AE2FC8973F0051190D /* InjectionNext */; };
+		2CE824FD2FD39F0100034EED /* Zoomable in Frameworks */ = {isa = PBXBuildFile; productRef = 2CE824FC2FD39F0100034EED /* Zoomable */; };
 		2CEE20152FCC7E09001A2671 /* EmbedScript.sh in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 2CEE20142FCC7E09001A2671 /* EmbedScript.sh */; };
 /* End PBXBuildFile section */
 
@@ -52,13 +53,14 @@
 				SnakApp.swift,
 				UI/Components/EntityTypeCapsule.swift,
 				UI/Components/FetchRandomItemButton.swift,
+				UI/Components/ImageView.swift,
 				UI/Components/LoadingView.swift,
 				UI/Components/MapView.swift,
 				UI/Components/PaginatedListView.swift,
 				UI/Components/RecentlyVisitedCard.swift,
 				UI/Components/SearchBar.swift,
 				UI/Components/SearchResultRow.swift,
-				"UI/Extensions/CGFloat+Spacing.swift",
+				"UI/Extensions/CGFloat+Layout.swift",
 				"UI/Extensions/EnvironmentValues+Navigate.swift",
 				"UI/Extensions/NavigationPath+Persistence.swift",
 				"UI/Extensions/StringProtocol+FirstUppercase.swift",
@@ -99,6 +101,7 @@
 			files = (
 				2CBD22A92FC8847B0051190D /* HotSwiftUI in Frameworks */,
 				2CBD22AB2FC8847B0051190D /* InjectionNext in Frameworks */,
+				2CE824FD2FD39F0100034EED /* Zoomable in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -175,6 +178,7 @@
 			packageProductDependencies = (
 				2CBD22A82FC8847B0051190D /* HotSwiftUI */,
 				2CBD22AA2FC8847B0051190D /* InjectionNext */,
+				2CE824FC2FD39F0100034EED /* Zoomable */,
 			);
 			productName = Snak;
 			productReference = 2CD6AF0D2FC77A5500406EDF /* Snak.app */;
@@ -211,6 +215,7 @@
 			packageReferences = (
 				2C70E4292FC8830D006E9340 /* XCRemoteSwiftPackageReference "HotSwiftUI" */,
 				2C70E42A2FC88322006E9340 /* XCRemoteSwiftPackageReference "InjectionNext" */,
+				2CE824FB2FD39F0100034EED /* XCRemoteSwiftPackageReference "Zoomable" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 2CD6AF0E2FC77A5500406EDF /* Products */;
@@ -586,6 +591,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		2CE824FB2FD39F0100034EED /* XCRemoteSwiftPackageReference "Zoomable" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ryohey/Zoomable";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -608,6 +621,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2C70E42A2FC88322006E9340 /* XCRemoteSwiftPackageReference "InjectionNext" */;
 			productName = InjectionNext;
+		};
+		2CE824FC2FD39F0100034EED /* Zoomable */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2CE824FB2FD39F0100034EED /* XCRemoteSwiftPackageReference "Zoomable" */;
+			productName = Zoomable;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

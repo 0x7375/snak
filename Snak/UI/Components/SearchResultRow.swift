@@ -7,7 +7,7 @@ struct SearchResultRow: View {
         NavigationLink(value: result) {
             HStack(alignment: .center) {
                 VStack(alignment: .leading) {
-                    Text(result.label ?? result.id)
+                    Text(result.label?.smartCase ?? result.id)
                         .font(.headline)
                         .lineLimit(1)
 

@@ -9,6 +9,8 @@ extension Entity.Statement {
 }
 
 struct DetailView: View {
+    @Environment(\.openURL) private var openURL
+
     let initialData: Entity.Context
 
     @State private var isLoading = false
@@ -63,7 +65,7 @@ struct DetailView: View {
                 }
             }
         }
-        .navigationTitle(fallbackLabel ?? String(localized: "Details"))
+        .navigationTitle(fallbackLabel?.smartCase ?? String(localized: "Details"))
         .task {
             guard entity == nil else { return }
             isLoading = true
@@ -78,29 +80,60 @@ struct DetailView: View {
 
     @ViewBuilder private func statementRow(_ stmt: Entity.Statement) -> some View {
         let safeLabel = stmt.property.label ?? stmt.property.id
+        let route = stmt.value.route(propertyID: stmt.property.id)
+
+        let style: DetailRow.Style = {
+            switch route {
+            case .entity(let id, _): return .entity(id: id)
+            case .map: return .fixed
+            case .link, .external: return .link
+            case .image(_, let thumb, _): return .thumbnail(url: thumb)
+            case nil: return .expandable
+            }
+        }()
+
+        let row = DetailRow(
+            title: safeLabel,
+            value: stmt.value.displayString,
+            image: stmt.value.systemImage,
+            style: style
+        )
+
         Group {
-            if case .entity(let ref) = stmt.value {
-                NavigationLink(
-                    value: Entity.Context(id: ref.id, label: ref.label, description: nil)
-                ) {
-                    DetailRow(
-                        title: safeLabel, value: stmt.value.displayString,
-                        image: stmt.value.systemImage, style: .entity(id: ref.id))
-                }
-            } else if case .coordinate(let lat, let lon, let p) = stmt.value {
-                NavigationLink(
-                    value: MapDestination(
-                        title: fallbackLabel ?? initialData.id, latitude: lat, longitude: lon,
-                        precision: p)
-                ) {
-                    DetailRow(
-                        title: safeLabel, value: stmt.value.displayString,
-                        image: stmt.value.systemImage, style: .fixed)
+            if let route = stmt.value.route(propertyID: stmt.property.id) {
+                switch route {
+                case .entity(let id, let label):
+                    NavigationLink(value: Entity.Context(id: id, label: label, description: nil)) {
+                        row
+                    }
+                case .map(let lat, let lon, let p):
+                    NavigationLink(
+                        value: MapDestination(
+                            title: fallbackLabel ?? initialData.id, latitude: lat, longitude: lon,
+                            precision: p)
+                    ) { row }
+                case .link(let url):
+                    Link(destination: url) {
+                        row
+                    }
+                    .foregroundStyle(.primary)
+                case .image(let file, _, let full):
+                    NavigationLink(
+                        value: ImageDestination(filename: file, url: full)
+                    ) {
+                        row
+                    }
+                case .external(let propID, let extID):
+                    Button {
+                        Task { await openExternal(propertyID: propID, externalID: extID) }
+                    } label: {
+                        row
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
                 }
             } else {
-                DetailRow(
-                    title: safeLabel, value: stmt.value.displayString, image: stmt.value.systemImage
-                )
+                row
             }
         }
         .swipeActions(edge: .leading) {
@@ -124,6 +157,20 @@ struct DetailView: View {
             }
         }
     }
+
+    private func openExternal(propertyID: String, externalID: String) async {
+        if let formatter = await fetchFormatterURL(propertyID: propertyID) {
+            let urlString = formatter.replacingOccurrences(of: "$1", with: externalID)
+            if let url = URL(string: urlString) {
+                openURL(url)
+                return
+            }
+        }
+
+        if let fallback = URL(string: "https://www.wikidata.org/wiki/Property:\(propertyID)") {
+            openURL(fallback)
+        }
+    }
 }
 
 struct DetailRow: View {
@@ -131,12 +178,15 @@ struct DetailRow: View {
         case expandable
         case fixed
         case entity(id: String)
+        case thumbnail(url: URL)
+        case link
     }
 
     let title: String
     let value: String
     let image: String
     var style: Style = .expandable
+
     @State private var expand = false
 
     var body: some View {
@@ -154,6 +204,29 @@ struct DetailRow: View {
             stack.onTapGesture {
                 expand.toggle()
             }
+        case .thumbnail(let url):
+            HStack {
+                stack
+                Spacer()
+                AsyncImage(url: url) { phase in
+                    if let image = phase.image {
+                        image
+                            .resizable()
+                            .scaledToFill()
+                    } else {
+                        Rectangle().fill(.quaternary)
+                    }
+                }
+                .frame(width: .imageSize, height: .imageSize)
+                .clipShape(RoundedRectangle(cornerRadius: .small))
+            }
+        case .link:
+            HStack {
+                stack
+                Spacer()
+                Image(systemName: "arrow.up.forward.square")
+                    .foregroundStyle(.tertiary)
+            }
         case .fixed:
             stack
         }
@@ -163,7 +236,7 @@ struct DetailRow: View {
         VStack(alignment: .leading, spacing: .small) {
             HStack(spacing: .small) {
                 Image(systemName: image)
-                Text(title.firstUppercased)
+                Text(title.smartCase)
             }
             .font(.callout)
             .foregroundStyle(.secondary)

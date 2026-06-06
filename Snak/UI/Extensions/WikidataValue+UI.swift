@@ -1,6 +1,39 @@
 import Foundation
 
+enum ValueRoute {
+    case entity(id: String, label: String?)
+    case map(latitude: Double, longitude: Double, precision: Double?)
+    case link(URL)
+    case image(filename: String, thumb: URL, full: URL)
+    case external(propertyID: String, id: String)
+}
+
 extension WikidataValue where Ref == Entity.Statement.Reference {
+    func route(propertyID: String) -> ValueRoute? {
+        switch self {
+        case .entity(let ref):
+            return .entity(id: ref.id, label: ref.label)
+        case .coordinate(let lat, let lon, let p):
+            return .map(latitude: lat, longitude: lon, precision: p)
+        case .url(let string):
+            return URL(string: string).map { .link($0) }
+        case .externalID(let id):
+            return .external(propertyID: propertyID, id: id)
+        case .media(let file):
+            let url = "https://commons.wikimedia.org/wiki/Special:FilePath/\(file)"
+
+            guard let thumb = URL(string: "\(url)?width=100"),
+                let full = URL(string: "\(url)?width=1000")
+            else {
+                return nil
+            }
+
+            return .image(filename: file, thumb: thumb, full: full)
+        default:
+            return nil
+        }
+    }
+
     var id: String? {
         if case .entity(let ref) = self {
             return ref.id
@@ -35,6 +68,8 @@ extension WikidataValue where Ref == Entity.Statement.Reference {
             return "globe"
         case .externalID:
             return "barcode.viewfinder"
+        case .media:
+            return "document"
         }
     }
 
@@ -43,7 +78,8 @@ extension WikidataValue where Ref == Entity.Statement.Reference {
         case .entity(let reference):
             return reference.label ?? reference.id
 
-        case .string(let text), .math(let text), .url(let text), .externalID(let text):
+        case .string(let text), .math(let text), .url(let text), .externalID(let text),
+            .media(let text):
             return text
 
         case .quantity(let amount, let unit):

@@ -40,6 +40,7 @@ struct EntityResponse: Decodable {
             case coordinate
             case url
             case externalID
+            case media
             case other
 
             init(from decoder: Decoder) throws {
@@ -54,6 +55,7 @@ struct EntityResponse: Decodable {
                 case "globe-coordinate": self = .coordinate
                 case "url": self = .url
                 case "external-id": self = .externalID
+                case "commonsMedia": self = .media
                 default: self = .other
                 }
             }
@@ -132,6 +134,10 @@ struct EntityResponse: Decodable {
                 guard let id = try? vc?.decode(String.self, forKey: .value) else { return nil }
                 return .externalID(id)
 
+            case .media:
+                guard let file = try? vc?.decode(String.self, forKey: .value) else { return nil }
+                return .media(file)
+
             default:
                 guard let str = try? vc?.decode(String.self, forKey: .value) else { return nil }
                 return .string(str)
@@ -201,4 +207,8 @@ struct SPARQLResponse: Decodable {
             }
         }
     }
+}
+
+struct FormatterResponse: Decodable {
+    let claims: [String: [EntityResponse.Statement]]
 }

@@ -46,6 +46,9 @@ struct MainView: View {
             .navigationDestination(for: MapDestination.self) { dest in
                 MapView(dest: dest)
             }
+            .navigationDestination(for: ImageDestination.self) { dest in
+                ImageView(dest: dest)
+            }
 
             #if os(iOS)
                 .searchable(text: $query, placement: .navigationBarDrawer, prompt: "Search...")

@@ -76,6 +76,7 @@ enum WikidataValue<Ref> {
     case coordinate(lat: Double, lon: Double, precision: Double)
     case url(String)
     case externalID(String)
+    case media(String)
 }
 
 extension WikidataValue: Codable where Ref: Codable {}

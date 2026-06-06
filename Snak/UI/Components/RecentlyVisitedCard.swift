@@ -7,7 +7,7 @@ struct RecentlyVisitedCard: View {
         NavigationLink(value: item) {
             VStack(alignment: .leading, spacing: .small) {
                 HStack(alignment: .top) {
-                    Text(item.label ?? item.id)
+                    Text(item.label?.smartCase ?? item.id)
                         .font(.subheadline)
                         .fontWeight(.semibold)
                         .foregroundStyle(.primary)
@@ -18,7 +18,7 @@ struct RecentlyVisitedCard: View {
                     EntityTypeCapsule(id: item.id, short: true)
                 }
 
-                Text(item.description ?? String(localized: "No description"))
+                Text(item.description?.smartCase ?? String(localized: "No description"))
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(3)
