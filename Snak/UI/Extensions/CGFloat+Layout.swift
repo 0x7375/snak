@@ -2,11 +2,11 @@ import Foundation
 
 extension CGFloat {
     #if os(watchOS)
-        static let extraSmall: CGFloat = 2
-        static let small: CGFloat = 4
-        static let medium: CGFloat = 8
-        static let large: CGFloat = 12
-        static let extraLarge: CGFloat = 16
+        static let extraSmall: CGFloat = 3
+        static let small: CGFloat = 6
+        static let medium: CGFloat = 10
+        static let large: CGFloat = 14
+        static let extraLarge: CGFloat = 20
 
         static let thumbnailSize: CGFloat = 40
         static let imageSize: CGFloat = 400
