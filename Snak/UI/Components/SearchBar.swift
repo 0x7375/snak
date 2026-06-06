@@ -2,25 +2,28 @@ import SwiftUI
 
 struct SearchBar: View {
     @Binding var query: String
-    var onSubmit: () -> Void
-    var onClear: () -> Void
-    var resultsShown: Bool
+    let prompt: String
+    var submitted: Bool = false
+    var insideToolbar: Bool = false
+    var onSubmit: (() -> Void)?
+    var onClear: (() -> Void)?
 
     var body: some View {
         HStack(spacing: .medium) {
-            TextField("Search...", text: $query)
+            TextField(prompt, text: $query)
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled(true)
-                .onSubmit { onSubmit() }
+                .onSubmit { onSubmit?() }
                 .overlay(alignment: .trailing) {
-                    if !query.isEmpty || resultsShown {
+                    if !query.isEmpty || submitted {
                         Button {
                             query = ""
-                            onClear()
+                            onClear?()
                         } label: {
                             Image(systemName: "xmark.circle.fill")
                                 .foregroundStyle(.secondary)
                                 .font(.body)
+                                .padding(.trailing, insideToolbar ? .large : 0)
                         }
                         .buttonStyle(.plain)
                     }

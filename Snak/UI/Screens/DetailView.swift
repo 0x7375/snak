@@ -27,31 +27,15 @@ struct DetailView: View {
         return entity?.label ?? initialData.label
     }
 
+    var canShowGeneral: Bool {
+        fallbackLabel != nil || !isLoading
+    }
+
+    let filterString = String(localized: "Filter statements...")
+
     var body: some View {
-        let canShowGeneral = fallbackLabel != nil || !isLoading
-
         List {
-            Section("General") {
-                if !canShowGeneral {
-                    ProgressView()
-                        .frame(maxWidth: .infinity)
-                        .listRowBackground(Color.clear)
-                } else {
-                    if let fallbackLabel {
-                        DetailRow(title: "Label", value: fallbackLabel, image: "tag")
-                    }
-
-                    let isItem = WikidataType(initialData.id) == .item
-                    DetailRow(
-                        title: "Type", value: isItem ? "Item" : "Property", image: "cube.box")
-
-                    DetailRow(title: "ID", value: initialData.id, image: "barcode")
-
-                    if let safeDesc = entity?.description ?? initialData.description {
-                        DetailRow(title: "Description", value: safeDesc, image: "info.circle")
-                    }
-                }
-            }
+            generalSection
 
             if canShowGeneral && isLoading {
                 ProgressView()
@@ -74,87 +58,110 @@ struct DetailView: View {
             isLoading = false
         }
         #if !os(watchOS)
-            .searchable(text: $searchText, prompt: "Filter statements...")
+            .searchable(text: $searchText, prompt: filterString)
+        #else
+            .toolbar {
+                SearchBar(query: $searchText, prompt: filterString, insideToolbar: true)
+            }
         #endif
+    }
+
+    private var generalSection: some View {
+        Section("General") {
+            if !canShowGeneral {
+                ProgressView()
+                    .frame(maxWidth: .infinity)
+                    .listRowBackground(Color.clear)
+            } else {
+                if let fallbackLabel {
+                    DetailRow(title: "Label", value: fallbackLabel, image: "tag")
+                }
+
+                let isItem = WikidataType(initialData.id) == .item
+                DetailRow(
+                    title: "Type", value: isItem ? "Item" : "Property", image: "cube.box")
+
+                DetailRow(title: "ID", value: initialData.id, image: "barcode")
+
+                if let safeDesc = entity?.description ?? initialData.description {
+                    DetailRow(title: "Description", value: safeDesc, image: "info.circle")
+                }
+            }
+        }
     }
 
     @ViewBuilder private func statementRow(_ stmt: Entity.Statement) -> some View {
         let safeLabel = stmt.property.label ?? stmt.property.id
         let route = stmt.value.route(propertyID: stmt.property.id)
 
-        let style: DetailRow.Style = {
-            switch route {
-            case .entity(let id, _): return .entity(id: id)
-            case .map: return .fixed
-            case .link, .external: return .link
-            case .image(_, let thumb, _): return .thumbnail(url: thumb)
-            case nil: return .expandable
-            }
-        }()
-
         let row = DetailRow(
             title: safeLabel,
             value: stmt.value.displayString,
             image: stmt.value.systemImage,
-            style: style
+            style: rowStyle(route: route)
         )
 
-        Group {
-            if let route = stmt.value.route(propertyID: stmt.property.id) {
-                switch route {
-                case .entity(let id, let label):
-                    NavigationLink(value: Entity.Context(id: id, label: label, description: nil)) {
-                        row
-                    }
-                case .map(let lat, let lon, let p):
-                    NavigationLink(
-                        value: MapDestination(
-                            title: fallbackLabel ?? initialData.id, latitude: lat, longitude: lon,
-                            precision: p)
-                    ) { row }
-                case .link(let url):
-                    Link(destination: url) {
-                        row
-                    }
-                    .foregroundStyle(.primary)
-                case .image(let file, _, let full):
-                    NavigationLink(
-                        value: ImageDestination(filename: file, url: full)
-                    ) {
-                        row
-                    }
-                case .external(let propID, let extID):
-                    Button {
-                        Task { await openExternal(propertyID: propID, externalID: extID) }
-                    } label: {
-                        row
-                            .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
+        routedRow(row: row, route: route)
+            .swipeActions(edge: .leading) {
+                NavigationLink(
+                    value: Entity.Context(
+                        id: stmt.property.id, label: stmt.property.label, description: nil)
+                ) {
+                    Label("Property", systemImage: "text.book.closed")
+                        .tint(Color.strongOrange)
                 }
-            } else {
+            }
+            .swipeActions {
+                if stmt.value.isSearchable {
+                    NavigationLink(
+                        value: StatementQuery(
+                            property: stmt.property, value: stmt.value, entityID: initialData.id)
+                    ) {
+                        Label("Similar", systemImage: "sparkle.magnifyingglass")
+                            .tint(.accentColor)
+                    }
+                }
+            }
+    }
+
+    @ViewBuilder private func routedRow(row: DetailRow, route: ValueRoute?) -> some View {
+        switch route {
+        case nil:
+            row
+        case .entity(let id, let label):
+            NavigationLink(value: Entity.Context(id: id, label: label, description: nil)) {
                 row
             }
-        }
-        .swipeActions(edge: .leading) {
+        case .map(let lat, let lon, let p):
             NavigationLink(
-                value: Entity.Context(
-                    id: stmt.property.id, label: stmt.property.label, description: nil)
-            ) {
-                Label("Property", systemImage: "text.book.closed")
-                    .tint(Color.strongOrange)
+                value: MapDestination(
+                    title: fallbackLabel ?? initialData.id,
+                    latitude: lat, longitude: lon, precision: p)
+            ) { row }
+        case .link(let url):
+            Link(destination: url) { row }
+                .foregroundStyle(.primary)
+        case .image(let file, _, let full):
+            NavigationLink(value: ImageDestination(filename: file, url: full)) {
+                row
             }
+        case .external(let propID, let extID):
+            Button {
+                Task { await openExternal(propertyID: propID, externalID: extID) }
+            } label: {
+                row.contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
         }
-        .swipeActions {
-            if stmt.value.isSearchable {
-                NavigationLink(
-                    value: StatementQuery(
-                        property: stmt.property, value: stmt.value, entityID: initialData.id)
-                ) {
-                    Label("Similar", systemImage: "sparkle.magnifyingglass")
-                        .tint(.accentColor)
-                }
-            }
+    }
+
+    private func rowStyle(route: ValueRoute?) -> DetailRow.Style {
+        switch route {
+        case .entity(let id, _): return .entity(id: id)
+        case .map: return .fixed
+        case .link, .external: return .link
+        case .image(_, let thumb, _): return .thumbnail(url: thumb)
+        case nil: return .expandable
         }
     }
 

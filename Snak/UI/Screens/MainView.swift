@@ -16,7 +16,7 @@ struct MainView: View {
         @State private var navigation = NavigationPath()
     #endif
     @State private var query = ""
-    @State private var showResults = false
+    @State private var submitted = false
 
     @State private var list = PaginatedList()
     @State private var history = HistoryManager()
@@ -72,14 +72,14 @@ struct MainView: View {
     }
 
     private func onClear() {
-        showResults = false
+        submitted = false
         query = ""
         list.cancel()
     }
 
     private func onSubmit() {
         guard !query.isEmpty else { return }
-        showResults = true
+        submitted = true
         list.loadInitial { offset in
             try await searchWikidata(query: query, offset: offset)
         }
@@ -88,9 +88,10 @@ struct MainView: View {
     @ViewBuilder private var watchLayout: some View {
         List {
             SearchBar(
-                query: $query, onSubmit: onSubmit, onClear: onClear, resultsShown: showResults
+                query: $query, prompt: "Search...", submitted: submitted, onSubmit: onSubmit,
+                onClear: onClear
             )
-            if showResults {
+            if submitted {
                 PaginatedListView(model: list)
             } else {
                 FetchRandomItemButton()
@@ -102,7 +103,7 @@ struct MainView: View {
 
     @ViewBuilder private var iosLayout: some View {
         VStack {
-            if showResults {
+            if submitted {
                 List {
                     PaginatedListView(model: list)
                 }
