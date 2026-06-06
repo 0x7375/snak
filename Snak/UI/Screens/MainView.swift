@@ -35,12 +35,7 @@ struct MainView: View {
             }
             .navigationTitle("Home")
             .navigationDestination(for: Entity.Context.self) { ctx in
-                DetailView(initialData: ctx)
-                    .task {
-                        try? await Task.sleep(for: .seconds(1))
-                        guard !Task.isCancelled else { return }
-                        history.add(ctx)
-                    }
+                DetailView(initialData: ctx, history: history)
             }
             .navigationDestination(for: StatementQuery.self) { query in
                 SimilarItemsView(query: query)

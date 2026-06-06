@@ -12,6 +12,7 @@ struct DetailView: View {
     @Environment(\.openURL) private var openURL
 
     let initialData: Entity.Context
+    let history: HistoryManager
 
     @State private var isLoading = false
     @State private var entity: Entity?
@@ -56,6 +57,13 @@ struct DetailView: View {
             entity = try? await fetchEntity(
                 entityID: initialData.id, type: WikidataType(initialData.id))
             isLoading = false
+
+            try? await Task.sleep(for: .seconds(1))
+            guard !Task.isCancelled else { return }
+            history.add(
+                Entity.Context(
+                    id: initialData.id, label: entity?.label, description: entity?.description
+                ))
         }
         #if !os(watchOS)
             .searchable(text: $searchText, prompt: filterString)
