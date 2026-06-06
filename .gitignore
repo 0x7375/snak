@@ -1,4 +1,5 @@
 .build
+requests
 xcuserdata/
 .DS_Store
 buildServer.json
