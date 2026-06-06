@@ -217,7 +217,7 @@ struct DetailRow: View {
                         Rectangle().fill(.quaternary)
                     }
                 }
-                .frame(width: .imageSize, height: .imageSize)
+                .frame(width: .thumbnailSize, height: .thumbnailSize)
                 .clipShape(RoundedRectangle(cornerRadius: .small))
             }
         case .link:

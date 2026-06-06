@@ -22,8 +22,8 @@ extension WikidataValue where Ref == Entity.Statement.Reference {
         case .media(let file):
             let url = "https://commons.wikimedia.org/wiki/Special:FilePath/\(file)"
 
-            guard let thumb = URL(string: "\(url)?width=100"),
-                let full = URL(string: "\(url)?width=1000")
+            guard let thumb = URL(string: "\(url)?width=\(CGFloat.thumbnailSize)"),
+                let full = URL(string: "\(url)?width=\(CGFloat.imageSize)")
             else {
                 return nil
             }
