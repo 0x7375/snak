@@ -1,13 +1,31 @@
 import SwiftUI
 
+extension WikidataType {
+    var idPrefix: String {
+        self == .item ? "Q" : "P"
+    }
+}
+
 struct EntityTypeCapsule: View {
     let id: String
-    #if os(watchOS)
-        var short: Bool = true
-    #else
-        var short: Bool = false
-    #endif
-    var type: WikidataType { WikidataType(id) }
+    let type: WikidataType
+    let short: Bool
+
+    init(_ id: String) {
+        self.id = id
+        self.type = WikidataType(id)
+        #if os(watchOS)
+            self.short = true
+        #else
+            self.short = false
+        #endif
+    }
+
+    init(_ type: WikidataType) {
+        self.id = type.idPrefix
+        self.type = type
+        self.short = true
+    }
 
     private var displayText: String {
         if short {
@@ -22,6 +40,7 @@ struct EntityTypeCapsule: View {
         let text = Text(displayText)
             .font(.caption)
             .fontWeight(.bold)
+            .fontDesign(.monospaced)
             .foregroundStyle(color)
             .lineLimit(1)
             .padding(.horizontal, .small)
@@ -32,7 +51,8 @@ struct EntityTypeCapsule: View {
             // show at least ~4 chars of the capsule
             text
                 .frame(
-                    minWidth: UIFont.preferredFont(forTextStyle: .caption1).pointSize * 5)
+                    minWidth: UIFont.preferredFont(forTextStyle: .caption1).pointSize * 5,
+                    alignment: .trailing)
         } else {
             text
         }

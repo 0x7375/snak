@@ -22,6 +22,8 @@ struct MainView: View {
     @State private var history = HistoryManager()
     @State private var discovery = DiscoveryFeed()
 
+    @State private var mode: WikidataType = .item
+
     var body: some View {
         NavigationStack(path: $navigation) {
             Group {
@@ -52,6 +54,10 @@ struct MainView: View {
 
             #if !os(watchOS)
                 .searchable(text: $query, placement: .navigationBarDrawer, prompt: "Search...")
+                .searchScopes($mode) {
+                    Text("Items").tag(WikidataType.item)
+                    Text("Properties").tag(WikidataType.property)
+                }
                 .onSubmit(of: .search, onSubmit)
                 .onChange(of: query) { _, newValue in
                     if newValue.isEmpty {
@@ -81,14 +87,17 @@ struct MainView: View {
         guard !query.isEmpty else { return }
         submitted = true
         list.loadInitial { offset in
-            try await searchWikidata(query: query, offset: offset)
+            try await searchWikidata(query: query, type: mode, offset: offset)
         }
     }
 
     @ViewBuilder private var watchLayout: some View {
         List {
             SearchBar(
-                query: $query, prompt: "Search...", submitted: submitted, onSubmit: onSubmit,
+                query: $query,
+                prompt: "Search...",
+                style: .search($mode),
+                onSubmit: onSubmit,
                 onClear: onClear
             )
             if submitted {

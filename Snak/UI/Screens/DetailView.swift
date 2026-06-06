@@ -61,7 +61,7 @@ struct DetailView: View {
             .searchable(text: $searchText, prompt: filterString)
         #else
             .toolbar {
-                SearchBar(query: $searchText, prompt: filterString, insideToolbar: true)
+                SearchBar(query: $searchText, prompt: filterString, style: .filter)
             }
         #endif
     }
@@ -205,7 +205,7 @@ struct DetailRow: View {
                         .layoutPriority(1)
                     #endif
                 Spacer()
-                EntityTypeCapsule(id: id)
+                EntityTypeCapsule(id)
             }
         case .expandable:
             stack.onTapGesture {

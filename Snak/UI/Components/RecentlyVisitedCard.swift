@@ -15,7 +15,7 @@ struct RecentlyVisitedCard: View {
 
                     Spacer()
 
-                    EntityTypeCapsule(id: item.id, short: true)
+                    EntityTypeCapsule(WikidataType(item.id))
                 }
 
                 Text(item.description?.smartCase ?? String(localized: "No description"))

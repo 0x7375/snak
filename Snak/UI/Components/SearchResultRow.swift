@@ -24,7 +24,7 @@ struct SearchResultRow: View {
 
                 Spacer()
 
-                EntityTypeCapsule(id: result.id)
+                EntityTypeCapsule(result.id)
             }
         }
         .buttonStyle(.plain)

@@ -34,13 +34,15 @@ extension WikidataType {
     }
 }
 
-func searchWikidata(query: String, offset: Int = 0, limit: Int = 15) async throws
+func searchWikidata(query: String, type: WikidataType, offset: Int = 0, limit: Int = 15)
+    async throws
     -> [Entity.Context]
 {
     let response: SearchResponse = try await WikimediaEndpoint(
         queryItems: [
             URLQueryItem(name: "action", value: "wbsearchentities"),
             URLQueryItem(name: "search", value: query),
+            URLQueryItem(name: "type", value: type.rawValue),
             URLQueryItem(name: "format", value: "json"),
             URLQueryItem(name: "language", value: systemLang),
             URLQueryItem(name: "uselang", value: systemLang),

@@ -1,12 +1,24 @@
 import SwiftUI
 
 struct SearchBar: View {
+    enum Style {
+        case filter
+        case search(Binding<WikidataType>)
+    }
+
     @Binding var query: String
     let prompt: String
+    let style: Style
+
     var submitted: Bool = false
-    var insideToolbar: Bool = false
     var onSubmit: (() -> Void)?
     var onClear: (() -> Void)?
+
+    // workaround padding being stripped inside toolbar
+    private var trailingPadding: CGFloat {
+        if case .filter = style { return .large }
+        return 0
+    }
 
     var body: some View {
         HStack(spacing: .medium) {
@@ -23,7 +35,15 @@ struct SearchBar: View {
                             Image(systemName: "xmark.circle.fill")
                                 .foregroundStyle(.secondary)
                                 .font(.body)
-                                .padding(.trailing, insideToolbar ? .large : 0)
+                                .padding(.trailing, trailingPadding)
+                        }
+                        .buttonStyle(.plain)
+                    } else if case .search(let mode) = style {
+                        Button {
+                            mode.wrappedValue =
+                                mode.wrappedValue == .item ? .property : .item
+                        } label: {
+                            EntityTypeCapsule(mode.wrappedValue)
                         }
                         .buttonStyle(.plain)
                     }
