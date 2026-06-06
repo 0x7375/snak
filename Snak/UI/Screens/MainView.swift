@@ -66,6 +66,10 @@ struct MainView: View {
                 }
             #endif
 
+            .onChange(of: mode) { _, _ in
+                onSubmit()
+            }
+
             #if DEBUG
                 .enableInjection()
                 .onChange(of: navigation) {
