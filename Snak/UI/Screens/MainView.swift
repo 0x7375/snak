@@ -55,8 +55,8 @@ struct MainView: View {
             #if !os(watchOS)
                 .searchable(text: $query, placement: .navigationBarDrawer, prompt: "Search...")
                 .searchScopes($mode) {
-                    Text("Items").tag(WikidataType.item)
-                    Text("Properties").tag(WikidataType.property)
+                    Text(String(localized: "Items")).tag(WikidataType.item)
+                    Text(String(localized: "Properties")).tag(WikidataType.property)
                 }
                 .onSubmit(of: .search, onSubmit)
                 .onChange(of: query) { _, newValue in

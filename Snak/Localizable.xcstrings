@@ -112,6 +112,16 @@
         }
       }
     },
+    "Items" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eléments"
+          }
+        }
+      }
+    },
     "N" : {
       "comment" : "North abbreviated",
       "localizations" : {
@@ -159,6 +169,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aucun résultats trouvé"
+          }
+        }
+      }
+    },
+    "Properties" : {
+      "localizations" : {
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Propriétés"
           }
         }
       }
