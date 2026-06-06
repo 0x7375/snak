@@ -27,7 +27,7 @@ struct MainView: View {
             Group {
                 #if os(iOS)
                     iosLayout
-                #else
+                #elseif os(watchOS)
                     watchLayout
                 #endif
             }
@@ -50,7 +50,7 @@ struct MainView: View {
                 ImageView(dest: dest)
             }
 
-            #if os(iOS)
+            #if !os(watchOS)
                 .searchable(text: $query, placement: .navigationBarDrawer, prompt: "Search...")
                 .onSubmit(of: .search, onSubmit)
                 .onChange(of: query) { _, newValue in

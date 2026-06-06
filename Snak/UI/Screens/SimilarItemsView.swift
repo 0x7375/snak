@@ -13,7 +13,9 @@ struct SimilarItemsView: View {
                 .listSectionSpacing(.medium)
             #endif
         }
-        #if os(iOS)
+        #if os(watchOS)
+            .navigationTitle(query.value.displayString)
+        #else
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -27,8 +29,6 @@ struct SimilarItemsView: View {
                     }
                 }
             }
-        #elseif os(watchOS)
-            .navigationTitle(query.value.displayString)
         #endif
         .task {
             list.loadInitial { offset in

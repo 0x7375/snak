@@ -51,7 +51,7 @@ struct MapView: View {
         map
             .navigationTitle(dest.title.smartCase)
             .navigationBarTitleDisplayMode(.inline)
-            #if os(iOS)
+            #if !os(watchOS)
                 .onChange(of: selectedFeature) { _, tappedPOI in
                     Task {
                         if let tappedPOI { await handlePOITap(feature: tappedPOI) }

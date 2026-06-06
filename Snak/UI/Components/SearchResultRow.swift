@@ -18,7 +18,7 @@ struct SearchResultRow: View {
                             .lineLimit(2)
                     }
                 }
-                #if os(iOS)
+                #if !os(watchOS)
                     .layoutPriority(1)
                 #endif
 

@@ -73,7 +73,7 @@ struct DetailView: View {
                 entityID: initialData.id, type: WikidataType(initialData.id))
             isLoading = false
         }
-        #if os(iOS)
+        #if !os(watchOS)
             .searchable(text: $searchText, prompt: "Filter statements...")
         #endif
     }
@@ -194,7 +194,7 @@ struct DetailRow: View {
         case .entity(let id):
             HStack {
                 stack
-                    #if os(iOS)
+                    #if !os(watchOS)
                         .layoutPriority(1)
                     #endif
                 Spacer()
@@ -244,7 +244,7 @@ struct DetailRow: View {
             Text(value)
                 .lineLimit(expand ? nil : 2)
         }
-        #if os(iOS)
+        #if !os(watchOS)
             .contextMenu {
                 Button {
                     UIPasteboard.general.string = value

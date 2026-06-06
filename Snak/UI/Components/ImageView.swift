@@ -1,5 +1,8 @@
 import SwiftUI
-import Zoomable
+
+#if !os(watchOS)
+    import Zoomable
+#endif
 
 struct ImageDestination: Hashable, Codable {
     let filename: String
@@ -15,7 +18,7 @@ struct ImageView: View {
                 image
                     .resizable()
                     .scaledToFit()
-                    #if os(iOS)
+                    #if !os(watchOS)
                         .zoomable()
                     #endif
             } else {
